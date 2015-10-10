@@ -11,6 +11,7 @@
     <AssemblyName>Menora</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NoWin32Manifest>False</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,15 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>AppIcon.ico</ApplicationIcon>
+    <ApplicationIcon>res\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,25 +48,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomTracker.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomTracker.Designer.cs">
-      <DependentUpon>CustomTracker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TempConfig.cs" />
-    <Compile Include="TempUtils.cs" />
-    <Compile Include="TmpChangerForm.cs">
+    <Compile Include="lib\Options.cs" />
+    <Compile Include="lib\SimpleJson.cs" />
+    <Compile Include="src\Program.cs" />
+    <Compile Include="src\TempChangerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TmpChangerForm.Designer.cs">
-      <DependentUpon>TmpChangerForm.cs</DependentUpon>
+    <Compile Include="src\TempChangerForm.Designer.cs">
+      <DependentUpon>TempChangerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="src\TempConfig.cs" />
+    <Compile Include="src\TempEntry.cs" />
+    <Compile Include="src\TempUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="app.manifest">
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="src\TempChangerForm.resx">
+      <DependentUpon>TempChangerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -84,15 +86,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AppIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TmpChangerForm.resx">
-      <DependentUpon>TmpChangerForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="lib" />
+    <Folder Include="src" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
