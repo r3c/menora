@@ -14,7 +14,7 @@ namespace Menora
         [STAThread]
         static void Main(string[] args)
         {
-            var config = "TempConfig.json";
+            var config = "Menora.json";
             var help = false;
             var minimize = false;
             var optionSet = new OptionSet();
