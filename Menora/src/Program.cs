@@ -42,7 +42,7 @@ namespace Menora
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TempChangerForm(config, minimize));
+            Application.Run(new MainForm(config, minimize));
         }
     }
 }

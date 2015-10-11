@@ -54,11 +54,11 @@
   <ItemGroup>
     <Compile Include="lib\Options.cs" />
     <Compile Include="src\Program.cs" />
-    <Compile Include="src\TempChangerForm.cs">
+    <Compile Include="src\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="src\TempChangerForm.Designer.cs">
-      <DependentUpon>TempChangerForm.cs</DependentUpon>
+    <Compile Include="src\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Config.cs" />
     <Compile Include="src\TimeTemperature.cs" />
@@ -75,8 +75,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="src\TempChangerForm.resx">
-      <DependentUpon>TempChangerForm.cs</DependentUpon>
+    <EmbeddedResource Include="src\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ILMerge.props" />
     <None Include="ILMergeOrder.txt" />

@@ -59,15 +59,15 @@ namespace Menora
             List<TimeTemperature> times;
             JToken token;
             bool tray;
-
+            
+            config = null;
+            
             try
             {
                 level0 = JObject.Parse(json);
             }
             catch
             {
-                config = null;
-
                 return false;
             }
 
@@ -85,11 +85,7 @@ namespace Menora
                     foreach (var pair in level1object)
                     {
                         if (!Enum.TryParse<Behavior>(pair.Value.Value<string>(), true, out behavior))
-                        {
-                            config = null;
-
                             return false;
-                        }
 
                         behaviors[pair.Key] = behavior;
                     }
@@ -110,11 +106,7 @@ namespace Menora
                         var match = Regex.Match(pair.Key, "^([0-9]{1,2}):([0-9]{1,2})$");
 
                         if (!match.Success)
-                        {
-                            config = null;
-
                             return false;
-                        }
 
                         var time = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture) * 60 + int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
 

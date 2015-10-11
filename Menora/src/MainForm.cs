@@ -9,7 +9,7 @@ using Menora.Properties;
 
 namespace Menora
 {
-    public partial class TempChangerForm : Form
+    public partial class MainForm : Form
     {
         private const string DefaultJSON =
             "{\n" +
@@ -25,7 +25,7 @@ namespace Menora
         private Config currentConfig;
         private readonly bool minimize;
 
-        public TempChangerForm(string configPath, bool minimize)
+        public MainForm(string configPath, bool minimize)
         {
             this.InitializeComponent();
 
@@ -35,7 +35,7 @@ namespace Menora
             this.configPath = configPath;
             this.minimize = minimize;
 
-            if (this.LoadConfigFromFile(configPath) || this.LoadConfigFromJSON(TempChangerForm.DefaultJSON))
+            if (this.LoadConfigFromFile(configPath) || this.LoadConfigFromJSON(MainForm.DefaultJSON))
                 this.radioModeConfig.Checked = true;
             else
                 this.radioModeDirect.Checked = true;
@@ -132,7 +132,7 @@ namespace Menora
             if (this.currentConfig == null)
                 return;
 
-            switch (this.currentConfig.GetPolicy(TempChangerForm.GetProcesses()))
+            switch (this.currentConfig.GetPolicy(MainForm.GetProcesses()))
             {
                 case Behavior.Apply:
                     temperature = this.currentConfig.TemperatureAt((int)DateTime.Now.TimeOfDay.TotalMinutes);
@@ -194,7 +194,7 @@ namespace Menora
             (
                 "Here is the list of currently running processes, you can change auto-update behavior when one of them is detected by adding their name in a \"behaviors\" section in your configuration (see help for details):" + Environment.NewLine +
                 Environment.NewLine +
-                string.Join(Environment.NewLine, TempChangerForm.GetProcesses().OrderBy((n) => n)),
+                string.Join(Environment.NewLine, MainForm.GetProcesses().OrderBy((n) => n)),
                 "Processes",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information

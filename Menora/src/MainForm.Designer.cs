@@ -1,6 +1,6 @@
 ﻿namespace Menora
 {
-    partial class TempChangerForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -239,12 +239,12 @@
             // trackBarDirect
             // 
             this.trackBarDirect.LargeChange = 500;
-            this.trackBarDirect.Location = new System.Drawing.Point(3, 40);
+            this.trackBarDirect.Location = new System.Drawing.Point(7, 40);
             this.trackBarDirect.Margin = new System.Windows.Forms.Padding(2);
             this.trackBarDirect.Maximum = 10000;
             this.trackBarDirect.Minimum = 3000;
             this.trackBarDirect.Name = "trackBarDirect";
-            this.trackBarDirect.Size = new System.Drawing.Size(309, 45);
+            this.trackBarDirect.Size = new System.Drawing.Size(305, 45);
             this.trackBarDirect.SmallChange = 10;
             this.trackBarDirect.TabIndex = 2;
             this.trackBarDirect.TickFrequency = 500;
@@ -275,6 +275,7 @@
             this.textBoxCode.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxCode.Multiline = true;
             this.textBoxCode.Name = "textBoxCode";
+            this.textBoxCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxCode.Size = new System.Drawing.Size(293, 163);
             this.textBoxCode.TabIndex = 4;
             this.textBoxCode.TextChanged += new System.EventHandler(this.TextBoxCodeTextChanged);
@@ -319,31 +320,31 @@
             this.toolStripMenuItemConfig,
             this.toolStripMenuItemExit});
             this.contextMenuStripTray.Name = "ctxTrayIcon";
-            this.contextMenuStripTray.Size = new System.Drawing.Size(212, 98);
+            this.contextMenuStripTray.Size = new System.Drawing.Size(140, 76);
             // 
             // toolStripMenuItemName
             // 
             this.toolStripMenuItemName.Enabled = false;
             this.toolStripMenuItemName.Name = "toolStripMenuItemName";
-            this.toolStripMenuItemName.Size = new System.Drawing.Size(211, 22);
+            this.toolStripMenuItemName.Size = new System.Drawing.Size(139, 22);
             this.toolStripMenuItemName.Text = "Menora v0.2";
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(208, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(136, 6);
             // 
             // toolStripMenuItemConfig
             // 
             this.toolStripMenuItemConfig.Name = "toolStripMenuItemConfig";
-            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(211, 22);
+            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(139, 22);
             this.toolStripMenuItemConfig.Text = "Settings...";
             this.toolStripMenuItemConfig.Click += new System.EventHandler(this.ToolStripMenuItemConfigClick);
             // 
             // toolStripMenuItemExit
             // 
             this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
-            this.toolStripMenuItemExit.Size = new System.Drawing.Size(211, 22);
+            this.toolStripMenuItemExit.Size = new System.Drawing.Size(139, 22);
             this.toolStripMenuItemExit.Text = "Exit";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.ToolStripMenuItemExitClick);
             // 
@@ -415,7 +416,7 @@
             this.buttonLoad.UseVisualStyleBackColor = true;
             this.buttonLoad.Click += new System.EventHandler(this.ButtonLoadClick);
             // 
-            // TempChangerForm
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -424,7 +425,7 @@
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBoxMode);
             this.MaximizeBox = false;
-            this.Name = "TempChangerForm";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menora";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TempChangerFormClosed);
