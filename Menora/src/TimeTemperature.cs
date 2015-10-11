@@ -2,12 +2,12 @@
 
 namespace Menora
 {
-    public struct TempEntry
+    public struct TimeTemperature
     {
         public int MinutesFromDayStart;
         public int TempKelvin;
 
-        public TempEntry(int minutesFromDayStart, int tempKelvin)
+        public TimeTemperature(int minutesFromDayStart, int tempKelvin)
         {
             this.MinutesFromDayStart = minutesFromDayStart;
             this.TempKelvin = tempKelvin;

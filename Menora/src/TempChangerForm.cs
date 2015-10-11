@@ -13,16 +13,16 @@ namespace Menora
     {
         private const string DefaultJSON =
             "{\n" +
-            "    \"times\": {\n" +
-            "        \"4:00\": 3500,\n" +
-            "        \"8:00\": 6500,\n" +
-            "        \"18:00\": 6500,\n" +
-            "        \"22:00\": 3500\n" +
-            "    }\n" +
+            "	\"times\": {\n" +
+            "		\"4:00\": 3500,\n" +
+            "		\"8:00\": 6500,\n" +
+            "		\"18:00\": 6500,\n" +
+            "		\"22:00\": 3500\n" +
+            "	}\n" +
             "}";
 
         private readonly string configPath;
-        private TempConfig currentConfig;
+        private Config currentConfig;
         private readonly bool minimize;
 
         public TempChangerForm(string configPath, bool minimize)
@@ -92,7 +92,7 @@ namespace Menora
         private void TempChangerFormClosed(object sender, FormClosedEventArgs e)
         {
             // Restore default temperature on exit
-            TempUtils.ApplyGamma(TempConfig.DefaultTemperature);
+            TempUtils.ApplyGamma(Config.DefaultTemperature);
         }
 
         private void TempChangerFormLoad(object sender, EventArgs e)
@@ -114,7 +114,7 @@ namespace Menora
         {
             bool valid;
 
-            valid = TempConfig.TryParse(this.textBoxCode.Text, out this.currentConfig);
+            valid = Config.TryParse(this.textBoxCode.Text, out this.currentConfig);
 
             this.toolStripStatusLabel.Text = valid ? "Configuration updated." : "Configuration is not valid JSON.";
 
@@ -126,24 +126,35 @@ namespace Menora
 
         private void TimerUpdateTick(object sender, EventArgs e)
         {
-            int temperature;
+            int? temperature;
             string text;
 
             if (this.currentConfig == null)
                 return;
 
-            if (this.currentConfig.IsEnabled(TempChangerForm.GetProcesses()))
+            switch (this.currentConfig.GetPolicy(TempChangerForm.GetProcesses()))
             {
-                temperature = this.currentConfig.TemperatureAt((int)DateTime.Now.TimeOfDay.TotalMinutes);
-                text = "Auto-update enabled, set temperature to " + temperature.ToString(CultureInfo.InvariantCulture) + "K.";
-            }
-            else
-            {
-                temperature = TempConfig.DefaultTemperature;
-                text = "Auto-update disabled, set default temperature.";
+                case Behavior.Apply:
+                    temperature = this.currentConfig.TemperatureAt((int)DateTime.Now.TimeOfDay.TotalMinutes);
+                    text = "Auto-update apply, set temperature to " + temperature.GetValueOrDefault().ToString(CultureInfo.InvariantCulture) + "K.";
+
+                    break;
+
+                case Behavior.Reset:
+                    temperature = Config.DefaultTemperature;
+                    text = "Auto-update reset, set default temperature.";
+
+                    break;
+
+                default:
+                    temperature = null;
+                    text = "Auto-updated paused, do not change temperature.";
+
+                    break;
             }
 
-            TempUtils.ApplyGamma(temperature);
+            if (temperature.HasValue)
+                TempUtils.ApplyGamma(temperature.Value);
 
             this.toolStripStatusLabel.Text = text;
         }
@@ -164,13 +175,13 @@ namespace Menora
             (
                 "Configuration editor accepts a JSON object where following properties can be set:" + Environment.NewLine +
                 Environment.NewLine +
-                "- times: desired temperatures by time of the day (JSON object where keys are times in \"hour:minute\" format and values are target temperatures in Kelvin)." + Environment.NewLine +
+                "- times: desired temperatures by time of the day, as a JSON object where keys are times in \"hour:minute\" format and values are target temperatures in Kelvin." + Environment.NewLine +
                 Environment.NewLine +
-                "- excludes: names of excluded processes, temperature will stop being updated automatically when one of these is running (JSON array, default value is an empty array)." + Environment.NewLine +
+                "- behaviors: behaviors by process name to change auto-update behavior according to running processes, as a JSON object where keys are process names and values are associated behaviors. Accepted behaviors are \"apply\" (default behavior), \"reset\" (reset to default temperature when associated process is running) or \"pause\" (stop changing temperature while associated process is running). Default value is an empty object if this parameter is missing." + Environment.NewLine +
                 Environment.NewLine +
-                "- tray: application will minimize to tray if true or to taskbar otherwise (boolean value, default value is true)." + Environment.NewLine +
+                "- tray: application will minimize to tray if true or to taskbar otherwise, as a boolean value. Default value is true if this parameter is missing." + Environment.NewLine +
                 Environment.NewLine +
-                "- interval: temperature will be updated every N second where N is value of this option (integer value, default value is 60).",   
+                "- interval: temperature will be updated every N second where N is value of this option, as an integer value. Default value is 60 if this parameter is missing.",   
                 "Help",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
@@ -181,7 +192,7 @@ namespace Menora
         {
             MessageBox.Show
             (
-                "Here is the list of currently running processes, you can automatically stop updating temperature when one of them is detected by adding their name in an \"excludes\" section in your configuration (see help for details):" + Environment.NewLine +
+                "Here is the list of currently running processes, you can change auto-update behavior when one of them is detected by adding their name in a \"behaviors\" section in your configuration (see help for details):" + Environment.NewLine +
                 Environment.NewLine +
                 string.Join(Environment.NewLine, TempChangerForm.GetProcesses().OrderBy((n) => n)),
                 "Processes",

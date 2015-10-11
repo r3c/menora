@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.props" Condition="Exists('..\packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,6 +37,9 @@
     <ApplicationIcon>res\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lib\Options.cs" />
-    <Compile Include="lib\SimpleJson.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="src\TempChangerForm.cs">
       <SubType>Form</SubType>
@@ -57,9 +60,10 @@
     <Compile Include="src\TempChangerForm.Designer.cs">
       <DependentUpon>TempChangerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\TempConfig.cs" />
-    <Compile Include="src\TempEntry.cs" />
-    <Compile Include="src\TempUtils.cs" />
+    <Compile Include="src\Config.cs" />
+    <Compile Include="src\TimeTemperature.cs" />
+    <Compile Include="src\Behavior.cs" />
+    <Compile Include="src\Temperature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -74,6 +78,8 @@
     <EmbeddedResource Include="src\TempChangerForm.resx">
       <DependentUpon>TempChangerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ILMerge.props" />
+    <None Include="ILMergeOrder.txt" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -90,6 +96,7 @@
     <Folder Include="src" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.targets" Condition="Exists('..\packages\MSBuild.ILMerge.Task.1.0.2\build\MSBuild.ILMerge.Task.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
