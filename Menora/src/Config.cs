@@ -12,7 +12,7 @@ namespace Menora
         public const int DefaultTemperature = 6500;
         private const int MinutesPerDay = 24 * 60;
 
-        public int Interval
+        public TimeSpan Interval
         {
             get
             {
@@ -37,11 +37,11 @@ namespace Menora
         }
 
         private readonly Dictionary<string, Behavior> behaviors;
-        private readonly int interval;
+        private readonly TimeSpan interval;
         private readonly TimeTemperature[] times;
         private readonly bool tray;
 
-        public Config(IEnumerable<TimeTemperature> times, IDictionary<string, Behavior> behaviors, int interval, bool tray)
+        public Config(IEnumerable<TimeTemperature> times, IDictionary<string, Behavior> behaviors, TimeSpan interval, bool tray)
         {
             this.behaviors = new Dictionary<string, Behavior>(behaviors);
             this.interval = interval;
@@ -53,7 +53,7 @@ namespace Menora
         {
             Behavior behavior;
             Dictionary<string, Behavior> behaviors;
-            int interval;
+            TimeSpan interval;
             JObject level0;
             JObject level1object;
             List<TimeTemperature> times;
@@ -72,7 +72,7 @@ namespace Menora
             }
 
             behaviors = new Dictionary<string, Behavior>();
-            interval = 60;
+            interval = TimeSpan.FromSeconds(60);
             times = new List<TimeTemperature>();
             tray = true;
 
@@ -93,7 +93,7 @@ namespace Menora
             }
 
             if (level0.TryGetValue("interval", out token))
-                interval = token.Value<int>();
+                interval = TimeSpan.FromSeconds(token.Value<int>());
 
             if (level0.TryGetValue("times", out token))
             {

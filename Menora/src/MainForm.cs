@@ -72,7 +72,7 @@ namespace Menora
             {
                 this.TimerUpdateTick(sender, e);
 
-                this.timerUpdate.Interval = Math.Max(this.currentConfig.Interval * 1000, 1000);
+                this.timerUpdate.Interval = Math.Max((int)this.currentConfig.Interval.TotalMilliseconds, 1000);
                 this.timerUpdate.Enabled = true;
             }
         }
