@@ -11,12 +11,12 @@ namespace Menora.Temperature
         [DllImport("user32.dll")]
         public static extern void ReleaseDC(IntPtr hDC, IntPtr hWnd);
         [DllImport("gdi32.dll")]
-        public static extern int GetDeviceGammaRamp(IntPtr hDC, ref RAMP lpRamp);
+        public static extern int GetDeviceGammaRamp(IntPtr hDC, ref Ramp lpRamp);
         [DllImport("gdi32.dll")]
-        public static extern bool SetDeviceGammaRamp(IntPtr hDC, ref RAMP lpRamp);
+        public static extern bool SetDeviceGammaRamp(IntPtr hDC, ref Ramp lpRamp);
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-        public struct RAMP
+        public struct Ramp
         {
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
             public UInt16[] Red;
@@ -25,7 +25,6 @@ namespace Menora.Temperature
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
             public UInt16[] Blue;
         }
-        private static int lastAppliedTemperature = 6500;
 
         // Thanks to http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
         private static void ComputeRamp(int tmpKelvin, out int rMultiplier, out int gMultiplier, out int bMultiplier)
@@ -77,37 +76,31 @@ namespace Menora.Temperature
             }
         }
 
-        private static void ApplyGammaUnchecked(int tmpKelvin)
-        {
-            IntPtr hdc = GetDC(IntPtr.Zero);
-            RAMP ramp = new RAMP();
-            int rMultiplier, gMultiplier, bMultiplier;
-            ComputeRamp(tmpKelvin, out rMultiplier, out gMultiplier, out bMultiplier);
-            // Fill the RGB values
-            ramp.Red = new ushort[256];
-            ramp.Green = new ushort[256];
-            ramp.Blue = new ushort[256];
-            for (int i = 0; i < 256; i++)
-            {
-                ramp.Red[i] = (ushort)(i * 256 * rMultiplier / 255);
-                ramp.Green[i] = (ushort)(i * 256 * gMultiplier / 255);
-                ramp.Blue[i] = (ushort)(i * 256 * bMultiplier / 255);
-            }
-            SetDeviceGammaRamp(hdc, ref ramp);
-            ReleaseDC(hdc, IntPtr.Zero);
-            lastAppliedTemperature = tmpKelvin;
-        }
-
         public static void ApplyGamma(int tmpKelvin)
         {
-            while (Math.Abs(tmpKelvin - lastAppliedTemperature) >= 500)
+            IntPtr hdc = Gamma.GetDC(IntPtr.Zero);
+
+            try
             {
-                if (tmpKelvin > lastAppliedTemperature)
-                    ApplyGammaUnchecked(Math.Min(tmpKelvin, lastAppliedTemperature + 500));
-                else if (tmpKelvin < lastAppliedTemperature)
-                    ApplyGammaUnchecked(Math.Max(tmpKelvin, lastAppliedTemperature - 500));
+                Ramp ramp = new Ramp();
+                int rMultiplier, gMultiplier, bMultiplier;
+                Gamma.ComputeRamp(tmpKelvin, out rMultiplier, out gMultiplier, out bMultiplier);
+                // Fill the RGB values
+                ramp.Red = new ushort[256];
+                ramp.Green = new ushort[256];
+                ramp.Blue = new ushort[256];
+                for (int i = 0; i < 256; i++)
+                {
+                    ramp.Red[i] = (ushort)(i * 256 * rMultiplier / 255);
+                    ramp.Green[i] = (ushort)(i * 256 * gMultiplier / 255);
+                    ramp.Blue[i] = (ushort)(i * 256 * bMultiplier / 255);
+                }
+                Gamma.SetDeviceGammaRamp(hdc, ref ramp);
             }
-            ApplyGammaUnchecked(tmpKelvin);
+            finally
+            {
+                Gamma.ReleaseDC(hdc, IntPtr.Zero);
+            }
         }
     }
 }

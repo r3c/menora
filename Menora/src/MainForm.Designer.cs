@@ -277,7 +277,7 @@
             // trayHelpLabel
             // 
             this.trayHelpLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trayHelpLabel.Location = new System.Drawing.Point(115, 152);
+            this.trayHelpLabel.Location = new System.Drawing.Point(126, 152);
             this.trayHelpLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.trayHelpLabel.Name = "trayHelpLabel";
             this.trayHelpLabel.Size = new System.Drawing.Size(207, 19);
