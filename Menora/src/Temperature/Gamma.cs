@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace Menora
+namespace Menora.Temperature
 {
-    static class TempUtils
+    static class Gamma
     {
         [DllImport("user32.dll")]
         public static extern IntPtr GetDC(IntPtr hWnd);

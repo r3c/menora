@@ -2,7 +2,7 @@
 
 namespace Menora
 {
-    enum Behavior
+    enum Rule
     {
         Apply, // Apply configuration
         Reset, // Reset temperature

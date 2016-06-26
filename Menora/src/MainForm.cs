@@ -1,162 +1,156 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Menora.Behavior;
 using Menora.Properties;
+using Menora.Temperature;
 
 namespace Menora
 {
     public partial class MainForm : Form
     {
-        private const string DefaultJSON =
-            "{\n" +
-            "	\"times\": {\n" +
-            "		\"4:00\": 3500,\n" +
-            "		\"8:00\": 6500,\n" +
-            "		\"18:00\": 6500,\n" +
-            "		\"22:00\": 3500\n" +
-            "	}\n" +
-            "}";
-
         private readonly string configPath;
-        private Config currentConfig;
         private readonly bool minimize;
+        private readonly SortedList<int, Point> points;
+        private readonly Dictionary<string, Rule> rules;
 
         public MainForm(string configPath, bool minimize)
         {
+            Config config;
+            string message;
+
             this.InitializeComponent();
 
             this.Icon = Resources.AppIcon;
 
-            this.currentConfig = null;
+            this.rules = new Dictionary<string, Rule>();
             this.configPath = configPath;
             this.minimize = minimize;
+            this.points = new SortedList<int, Point>();
 
-            if (this.LoadConfigFromFile(configPath) || this.LoadConfigFromJSON(MainForm.DefaultJSON))
-                this.radioModeConfig.Checked = true;
-            else
-                this.radioModeDirect.Checked = true;
+            config = new Config();
+
+            if (File.Exists(configPath) && !Config.TryParse(File.ReadAllText(configPath), out config, out message))
+                this.toolStripStatusLabel.Text = string.Format(CultureInfo.InvariantCulture, "Configuration error: {0}", message);
+
+            this.ConfigSet(config);
         }
 
         #region Event handling
 
-        private void ButtonLoadClick(object sender, EventArgs e)
+        private void IntervalNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            if (this.LoadConfigFromFile(this.configPath))
-                this.toolStripStatusLabel.Text = "Configuration loaded from file.";
-            else
-                this.toolStripStatusLabel.Text = "No configuration, please save one first.";
+            this.ModeConfigRadioCheckedChanged(sender, e);
         }
 
-        private void ButtonSaveClick(object sender, EventArgs e)
-        {
-            if (!File.Exists(this.configPath) || MessageBox.Show(string.Format("Overwrite current configuration file ({0})?", this.configPath), "Save configuration", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                File.WriteAllText(this.configPath, this.textBoxCode.Text);
-
-                this.toolStripStatusLabel.Text = "Configuration saved to file.";
-            }
-        }
-
-        private void ButtonSetupClick(object sender, EventArgs e)
-        {
-            this.contextMenuStripSetup.Show(this.buttonSetup, 0, 0);
-        }        
-
-        private void RadioModeConfigCheckedChanged(object sender, EventArgs e)
-        {
-            if (this.currentConfig != null && this.radioModeConfig.Checked)
-            {
-                this.TimerUpdateTick(sender, e);
-
-                this.timerUpdate.Interval = Math.Max((int)this.currentConfig.Interval.TotalMilliseconds, 1000);
-                this.timerUpdate.Enabled = true;
-            }
-        }
-
-        private void RadioModeDirectCheckedChanged(object sender, EventArgs e)
-        {
-            if (this.radioModeDirect.Checked)
-                this.TrackBarDirectValueChanged(sender, e);
-        }
-
-        private void RadioModeTimeCheckedChanged(object sender, EventArgs e)
-        {
-            if (this.radioModeTime.Checked)
-                this.TrackBarTimeValueChanged(sender, e);
-        }
-
-        private void TempChangerFormClosed(object sender, FormClosedEventArgs e)
+        private void MainFormClosed(object sender, FormClosedEventArgs e)
         {
             // Restore default temperature on exit
-            TempUtils.ApplyGamma(Config.DefaultTemperature);
+            Gamma.ApplyGamma(Point.DefaultTemperature);
         }
 
-        private void TempChangerFormLoad(object sender, EventArgs e)
+        private void MainFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.minimize && this.currentConfig != null)
+            Config config;
+            string message;
+
+            if (this.ConfigGet(out config, out message))
+                File.WriteAllText(this.configPath, config.ToJSON());
+            else if (MessageBox.Show(string.Format(CultureInfo.InvariantCulture, "Current configuration cannot be saved: {0}." + Environment.NewLine + Environment.NewLine + "Do you want to exit without saving?", message), "Exit without saving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                e.Cancel = true;                
+        }
+
+        private void MainFormLoad(object sender, EventArgs e)
+        {
+            if (this.minimize)
                 this.WindowState = FormWindowState.Minimized;
         }
 
-        private void TempChangerFormResize(object sender, EventArgs e)
+        private void MainFormResize(object sender, EventArgs e)
         {
-            bool showInTray;
-
-            showInTray = this.currentConfig == null || this.currentConfig.Tray;
-
-            this.ShowSystrayIcon(this.WindowState == FormWindowState.Minimized && showInTray);
+            this.ShowSystrayIcon(this.WindowState == FormWindowState.Minimized && this.trayCheckBox.Checked);
         }
 
-        private void TextBoxCodeTextChanged(object sender, EventArgs e)
+        private void ModeConfigRadioCheckedChanged(object sender, EventArgs e)
         {
-            bool valid;
-
-            valid = Config.TryParse(this.textBoxCode.Text, out this.currentConfig);
-
-            this.toolStripStatusLabel.Text = valid ? "Configuration updated." : "Configuration is not valid JSON.";
-
-            this.buttonSave.Enabled = valid;
-            this.radioModeConfig.Enabled = valid;
-            this.radioModeTime.Enabled = valid;
-            this.trackBarTime.Enabled = valid;
-        }
-
-        private void TimerUpdateTick(object sender, EventArgs e)
-        {
-            int? temperature;
-            string text;
-
-            if (this.currentConfig == null)
-                return;
-
-            switch (this.currentConfig.GetPolicy(MainForm.GetProcesses()))
+            if (this.modeConfigRadio.Checked)
             {
-                case Behavior.Apply:
-                    temperature = this.currentConfig.TemperatureAt((int)DateTime.Now.TimeOfDay.TotalMinutes);
-                    text = "Auto-update apply, set temperature to " + temperature.GetValueOrDefault().ToString(CultureInfo.InvariantCulture) + "K.";
+                this.UpdateTimerTick(sender, e);
 
-                    break;
-
-                case Behavior.Reset:
-                    temperature = Config.DefaultTemperature;
-                    text = "Auto-update reset, set default temperature.";
-
-                    break;
-
-                default:
-                    temperature = null;
-                    text = "Auto-updated paused, do not change temperature.";
-
-                    break;
+                this.updateTimer.Interval = Math.Max((int)this.intervalNumericUpDown.Value * 1000, 1000);
+                this.updateTimer.Enabled = true;
             }
+        }
 
-            if (temperature.HasValue)
-                TempUtils.ApplyGamma(temperature.Value);
+        private void ModeDirectRadioCheckedChanged(object sender, EventArgs e)
+        {
+            if (this.modeDirectRadio.Checked)
+                this.ModeDirectTrackBarValueChanged(sender, e);
+        }
 
-            this.toolStripStatusLabel.Text = text;
+        private void ModeDirectTrackBarValueChanged(object sender, EventArgs e)
+        {
+            int temperature = this.modeDirectTrackBar.Value;
+
+            Gamma.ApplyGamma(temperature);
+
+            this.modeDirectRadio.Checked = true;
+            this.modeDirectValue.Text = temperature.ToString(CultureInfo.InvariantCulture) + "K";
+            this.updateTimer.Enabled = false;
+        }
+
+        private void ModeTimeRadioCheckedChanged(object sender, EventArgs e)
+        {
+            if (this.modeTimeRadio.Checked)
+                this.ModeTimeTrackBarChanged(sender, e);
+        }
+
+        private void ModeTimeTrackBarChanged(object sender, EventArgs e)
+        {
+            int temperature = Point.TemperatureAt(this.points.Values, this.modeTimeTrackBar.Value);
+
+            Gamma.ApplyGamma(temperature);
+
+            this.modeTimeValue.Text = string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00}", this.modeTimeTrackBar.Value / 60, this.modeTimeTrackBar.Value % 60);
+            this.modeTimeRadio.Checked = true;
+            this.modeTimeTemperature.Text = temperature.ToString(CultureInfo.InvariantCulture) + "K";
+            this.updateTimer.Enabled = false;
+        }
+
+        private void PointsTextBoxTextChanged(object sender, EventArgs e)
+        {
+            string message;
+
+            if (!this.PointsGet(out message))
+                this.toolStripStatusLabel.Text = string.Format(CultureInfo.InvariantCulture, "Invalid temperatures definition: {0}", message);
+            else
+                this.toolStripStatusLabel.Text = string.Empty;
+        }
+
+        private void RulesButtonClick(object sender, EventArgs e)
+        {
+            MessageBox.Show
+            (
+                "Here is the list of currently running processes, you can change auto-update behavior when one of them is detected by adding a line \"<process_name> = <behavior>\" in the \"behaviors\" text box, where <process_name> is the name of the process and <behavior> is one of \"apply\", \"pause\" or \"reset\"." + Environment.NewLine +
+                Environment.NewLine +
+                string.Join(Environment.NewLine, Process.GetProcesses().OrderBy(n => n).Distinct()),
+                "Processes",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+        }
+
+        private void RulesTextBoxTextChanged(object sender, EventArgs e)
+        {
+            string message;
+
+            if (!this.RulesGet(out message))
+                this.toolStripStatusLabel.Text = string.Format(CultureInfo.InvariantCulture, "Invalid behaviors definition: {0}", message);
+            else
+                this.toolStripStatusLabel.Text = string.Empty;
         }
 
         private void ToolStripMenuItemConfigClick(object sender, EventArgs e)
@@ -169,95 +163,155 @@ namespace Menora
             this.Close();
         }
 
-        private void ToolStripMenuItemHelpClick(object sender, EventArgs e)
-        {
-            MessageBox.Show
-            (
-                "Configuration editor accepts a JSON object where following properties can be set:" + Environment.NewLine +
-                Environment.NewLine +
-                "- times: desired temperatures by time of the day, as a JSON object where keys are times in \"hour:minute\" format and values are target temperatures in Kelvin." + Environment.NewLine +
-                Environment.NewLine +
-                "- behaviors: behaviors by process name to change auto-update behavior according to running processes, as a JSON object where keys are process names and values are associated behaviors. Accepted behaviors are \"apply\" (default behavior), \"reset\" (reset to default temperature when associated process is running) or \"pause\" (stop changing temperature while associated process is running). Default value is an empty object if this parameter is missing." + Environment.NewLine +
-                Environment.NewLine +
-                "- tray: application will minimize to tray if true or to taskbar otherwise, as a boolean value. Default value is true if this parameter is missing." + Environment.NewLine +
-                Environment.NewLine +
-                "- interval: temperature will be updated every N second where N is value of this option, as an integer value. Default value is 60 if this parameter is missing.",   
-                "Help",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-        }
-
-        private void ToolStripMenuItemProcessClick(object sender, EventArgs e)
-        {
-            MessageBox.Show
-            (
-                "Here is the list of currently running processes, you can change auto-update behavior when one of them is detected by adding their name in a \"behaviors\" section in your configuration (see help for details):" + Environment.NewLine +
-                Environment.NewLine +
-                string.Join(Environment.NewLine, MainForm.GetProcesses().OrderBy((n) => n)),
-                "Processes",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-        }
-
-        private void TrackBarDirectValueChanged(object sender, EventArgs e)
-        {
-            TempUtils.ApplyGamma(this.trackBarDirect.Value);
-
-            this.labelDirectTemperature.Text = this.trackBarDirect.Value.ToString(CultureInfo.InvariantCulture) + "K";
-            this.radioModeDirect.Checked = true;
-            this.timerUpdate.Enabled = false;
-        }
-
-        private void TrackBarTimeValueChanged(object sender, EventArgs e)
-        {
-            int temperature;
-
-            if (this.currentConfig == null)
-                return;
-
-            temperature = this.currentConfig.TemperatureAt(this.trackBarTime.Value);
-
-            TempUtils.ApplyGamma(temperature);
-
-            this.labelTime.Text = string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00}", this.trackBarTime.Value / 60, this.trackBarTime.Value % 60);
-            this.labelTimeTemperature.Text = temperature.ToString(CultureInfo.InvariantCulture) + "K";
-            this.radioModeTime.Checked = true;
-            this.timerUpdate.Enabled = false;
-        }
-
         private void TrayIconMouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.WindowState = FormWindowState.Normal;
         }
 
-        #endregion
-
-        private static IEnumerable<string> GetProcesses()
+        private void UpdateTimerTick(object sender, EventArgs e)
         {
-            return Process.GetProcesses().Select((p) => p.ProcessName);
+            int temperature;
+
+            switch (Process.GetRule(this.rules, Process.GetProcesses()))
+            {
+                case Rule.Apply:
+                    temperature = Point.TemperatureAt(this.points.Values, (int)DateTime.Now.TimeOfDay.TotalMinutes);
+
+                    Gamma.ApplyGamma(temperature);
+
+                    this.modeConfigValue.Text = string.Format(CultureInfo.InvariantCulture, "{0}K (apply)", temperature);
+
+                    break;
+
+                case Rule.Reset:
+                    Gamma.ApplyGamma(Point.DefaultTemperature);
+
+                    this.modeConfigValue.Text = string.Format(CultureInfo.InvariantCulture, "{0}K (reset)", Point.DefaultTemperature);
+
+                    break;
+
+                default:
+                    this.modeConfigValue.Text = "(pause)";
+
+                    break;
+            }
         }
 
-        private bool LoadConfigFromFile(string path)
-        {
-            string json;
+        #endregion
 
-            try
+        private bool ConfigGet(out Config config, out string message)
+        {
+            if (!this.PointsGet(out message) || !this.RulesGet(out message))
             {
-                json = File.ReadAllText(path);
-            }
-            catch (IOException)
-            {
+                config = null;
+
                 return false;
             }
 
-            return this.LoadConfigFromJSON(json);
+            config = new Config();
+            config.Interval = TimeSpan.FromSeconds((int)this.intervalNumericUpDown.Value);
+            config.Points = this.points.Values.ToArray();
+            config.Rules = this.rules;
+            config.Tray = this.trayCheckBox.Checked;
+
+            return true;
         }
 
-        private bool LoadConfigFromJSON(string json)
+        private void ConfigSet(Config config)
         {
-            this.textBoxCode.Text = json.Replace("\r", string.Empty).Replace("\n", Environment.NewLine);
+            this.rulesTextBox.Text = string.Join(Environment.NewLine, config.Rules.Select(p => string.Format(CultureInfo.InvariantCulture, "{0} = {1}", p.Key, p.Value)));
+            this.intervalNumericUpDown.Value = (int)config.Interval.TotalSeconds;
+            this.pointsTextBox.Text = string.Join(Environment.NewLine, config.Points.Select(t => string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00} = {2}", t.MinutesFromDayStart / 60, t.MinutesFromDayStart % 60, t.TempKelvin)));
+            this.trayCheckBox.Checked = config.Tray;
+        }
+
+        private bool PointsGet(out string message)
+        {
+            int hours;
+            int kelvins;
+            int minutes;
+            Point temperature;
+
+            this.points.Clear();
+
+            var i = 0;
+
+            foreach (string[] temperatureString in this.pointsTextBox.Text
+                .Split(new [] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(l => l.Split(new [] { ':', '=' }, 3).Select(s => s.Trim()).ToArray()))
+            {
+                ++i;
+
+                if (temperatureString.Length != 3)
+                {
+                    message = string.Format(CultureInfo.InvariantCulture, "invalid syntax at line #{0}", i);
+
+                    return false;
+                }
+
+                if (!int.TryParse(temperatureString[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out hours))
+                {
+                    message = string.Format(CultureInfo.InvariantCulture, "invalid hours '{1}' at line #{0}", i, temperatureString[0]);
+
+                    return false;
+                }
+
+                if (!int.TryParse(temperatureString[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out minutes))
+                {
+                    message = string.Format(CultureInfo.InvariantCulture, "invalid minutes '{1}' at line #{0}", i, temperatureString[1]);
+
+                    return false;
+                }
+
+                if (!int.TryParse(temperatureString[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out kelvins))
+                {
+                    message = string.Format(CultureInfo.InvariantCulture, "invalid kelvins '{1}' at line #{0}", i, temperatureString[2]);
+
+                    return false;
+                }
+
+                temperature = new Point(hours * 60 + minutes, kelvins);
+
+                this.points[temperature.MinutesFromDayStart] = temperature;
+            }
+
+            message = null;
+
+            return true;
+        }
+
+        private bool RulesGet(out string message)
+        {
+            Rule rule;
+
+            this.rules.Clear();
+
+            var i = 0;
+
+            foreach (string[] behaviorString in this.rulesTextBox.Text
+                .Split(new [] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(l => l.Split(new [] { '=' }, 2).Select(s => s.Trim()).ToArray()))
+            {
+                ++i;
+
+                if (behaviorString.Length != 2)
+                {
+                    message = string.Format(CultureInfo.InvariantCulture, "invalid syntax at line #{0}", i);
+
+                    return false;
+                }
+
+                if (!Enum.TryParse(behaviorString[1], true, out rule))
+                {
+                    message = string.Format(CultureInfo.InvariantCulture, "unknown rule '{1}' at line #{0}", i, behaviorString[1]);
+
+                    return false;
+                }
+
+                this.rules[behaviorString[0]] = rule;
+            }
+
+            message = null;
 
             return true;
         }

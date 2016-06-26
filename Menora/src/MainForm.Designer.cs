@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.groupBoxMode = new System.Windows.Forms.GroupBox();
-            this.labelTimeTemperature = new System.Windows.Forms.Label();
-            this.labelDirectTemperature = new System.Windows.Forms.Label();
-            this.labelTime = new System.Windows.Forms.Label();
-            this.radioModeConfig = new System.Windows.Forms.RadioButton();
-            this.labelHelp = new System.Windows.Forms.Label();
-            this.labelTimeDefault = new System.Windows.Forms.Label();
-            this.labelTimeMax = new System.Windows.Forms.Label();
-            this.labelTimeMin = new System.Windows.Forms.Label();
-            this.trackBarTime = new System.Windows.Forms.TrackBar();
-            this.radioModeTime = new System.Windows.Forms.RadioButton();
-            this.labelDirectDefault = new System.Windows.Forms.Label();
-            this.labelDirectMax = new System.Windows.Forms.Label();
-            this.labelDirectMin = new System.Windows.Forms.Label();
-            this.trackBarDirect = new System.Windows.Forms.TrackBar();
-            this.radioModeDirect = new System.Windows.Forms.RadioButton();
-            this.textBoxCode = new System.Windows.Forms.TextBox();
-            this.buttonSave = new System.Windows.Forms.Button();
-            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
+            this.modeGroupBox = new System.Windows.Forms.GroupBox();
+            this.modeConfigValue = new System.Windows.Forms.Label();
+            this.modeTimeTemperature = new System.Windows.Forms.Label();
+            this.modeDirectValue = new System.Windows.Forms.Label();
+            this.modeTimeValue = new System.Windows.Forms.Label();
+            this.modeConfigRadio = new System.Windows.Forms.RadioButton();
+            this.modeTimeDefaultLabel = new System.Windows.Forms.Label();
+            this.modeTimeMaxLabel = new System.Windows.Forms.Label();
+            this.modeTimeMinLabel = new System.Windows.Forms.Label();
+            this.modeTimeTrackBar = new System.Windows.Forms.TrackBar();
+            this.modeTimeRadio = new System.Windows.Forms.RadioButton();
+            this.modeDirectMinLabel = new System.Windows.Forms.Label();
+            this.modeDirectMaxLabel = new System.Windows.Forms.Label();
+            this.modeDirectDefaultLabel = new System.Windows.Forms.Label();
+            this.modeDirectTrackBar = new System.Windows.Forms.TrackBar();
+            this.modeDirectRadio = new System.Windows.Forms.RadioButton();
+            this.trayHelpLabel = new System.Windows.Forms.Label();
+            this.pointsTextBox = new System.Windows.Forms.TextBox();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.contextMenuStripTray = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -56,254 +56,263 @@
             this.toolStripMenuItemConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.groupBoxCode = new System.Windows.Forms.GroupBox();
-            this.buttonSetup = new System.Windows.Forms.Button();
-            this.contextMenuStripSetup = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemProcess = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemHelp = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonLoad = new System.Windows.Forms.Button();
-            this.groupBoxMode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarDirect)).BeginInit();
+            this.configGroupBox = new System.Windows.Forms.GroupBox();
+            this.trayCheckBox = new System.Windows.Forms.CheckBox();
+            this.trayLabel = new System.Windows.Forms.Label();
+            this.intervalUnitLabel = new System.Windows.Forms.Label();
+            this.intervalNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.intervalLabel = new System.Windows.Forms.Label();
+            this.rulesTextBox = new System.Windows.Forms.TextBox();
+            this.rulesLabel = new System.Windows.Forms.Label();
+            this.pointsLabel = new System.Windows.Forms.Label();
+            this.rulesButton = new System.Windows.Forms.Button();
+            this.modeGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.modeTimeTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.modeDirectTrackBar)).BeginInit();
             this.statusStrip.SuspendLayout();
             this.contextMenuStripTray.SuspendLayout();
-            this.groupBoxCode.SuspendLayout();
-            this.contextMenuStripSetup.SuspendLayout();
+            this.configGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.intervalNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBoxMode
+            // modeGroupBox
             // 
-            this.groupBoxMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBoxMode.Controls.Add(this.labelTimeTemperature);
-            this.groupBoxMode.Controls.Add(this.labelDirectTemperature);
-            this.groupBoxMode.Controls.Add(this.labelTime);
-            this.groupBoxMode.Controls.Add(this.radioModeConfig);
-            this.groupBoxMode.Controls.Add(this.labelHelp);
-            this.groupBoxMode.Controls.Add(this.labelTimeDefault);
-            this.groupBoxMode.Controls.Add(this.labelTimeMax);
-            this.groupBoxMode.Controls.Add(this.labelTimeMin);
-            this.groupBoxMode.Controls.Add(this.trackBarTime);
-            this.groupBoxMode.Controls.Add(this.radioModeTime);
-            this.groupBoxMode.Controls.Add(this.labelDirectDefault);
-            this.groupBoxMode.Controls.Add(this.labelDirectMax);
-            this.groupBoxMode.Controls.Add(this.labelDirectMin);
-            this.groupBoxMode.Controls.Add(this.trackBarDirect);
-            this.groupBoxMode.Controls.Add(this.radioModeDirect);
-            this.groupBoxMode.Location = new System.Drawing.Point(11, 11);
-            this.groupBoxMode.Margin = new System.Windows.Forms.Padding(2);
-            this.groupBoxMode.Name = "groupBoxMode";
-            this.groupBoxMode.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBoxMode.Size = new System.Drawing.Size(316, 216);
-            this.groupBoxMode.TabIndex = 0;
-            this.groupBoxMode.TabStop = false;
-            this.groupBoxMode.Text = "Test && use";
-            // 
-            // labelTimeTemperature
-            // 
-            this.labelTimeTemperature.AutoSize = true;
-            this.labelTimeTemperature.Location = new System.Drawing.Point(212, 91);
-            this.labelTimeTemperature.Name = "labelTimeTemperature";
-            this.labelTimeTemperature.Size = new System.Drawing.Size(38, 13);
-            this.labelTimeTemperature.TabIndex = 13;
-            this.labelTimeTemperature.Text = "6500K";
-            // 
-            // labelDirectTemperature
-            // 
-            this.labelDirectTemperature.AutoSize = true;
-            this.labelDirectTemperature.Location = new System.Drawing.Point(129, 25);
-            this.labelDirectTemperature.Name = "labelDirectTemperature";
-            this.labelDirectTemperature.Size = new System.Drawing.Size(38, 13);
-            this.labelDirectTemperature.TabIndex = 1;
-            this.labelDirectTemperature.Text = "6500K";
-            // 
-            // labelTime
-            // 
-            this.labelTime.AutoSize = true;
-            this.labelTime.Location = new System.Drawing.Point(172, 91);
-            this.labelTime.Name = "labelTime";
-            this.labelTime.Size = new System.Drawing.Size(34, 13);
-            this.labelTime.TabIndex = 7;
-            this.labelTime.Text = "12:00";
-            // 
-            // radioModeConfig
-            // 
-            this.radioModeConfig.AutoSize = true;
-            this.radioModeConfig.Location = new System.Drawing.Point(7, 159);
-            this.radioModeConfig.Margin = new System.Windows.Forms.Padding(2);
-            this.radioModeConfig.Name = "radioModeConfig";
-            this.radioModeConfig.Size = new System.Drawing.Size(288, 17);
-            this.radioModeConfig.TabIndex = 12;
-            this.radioModeConfig.TabStop = true;
-            this.radioModeConfig.Text = "Auto-update according to current time and configuration";
-            this.radioModeConfig.UseVisualStyleBackColor = true;
-            this.radioModeConfig.CheckedChanged += new System.EventHandler(this.RadioModeConfigCheckedChanged);
-            // 
-            // labelHelp
-            // 
-            this.labelHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelHelp.Location = new System.Drawing.Point(7, 188);
-            this.labelHelp.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelHelp.Name = "labelHelp";
-            this.labelHelp.Size = new System.Drawing.Size(305, 19);
-            this.labelHelp.TabIndex = 5;
-            this.labelHelp.Text = "Start with option -m to minimize on start, -h for help.";
-            // 
-            // labelTimeDefault
-            // 
-            this.labelTimeDefault.AutoSize = true;
-            this.labelTimeDefault.Location = new System.Drawing.Point(137, 136);
-            this.labelTimeDefault.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelTimeDefault.Name = "labelTimeDefault";
-            this.labelTimeDefault.Size = new System.Drawing.Size(34, 13);
-            this.labelTimeDefault.TabIndex = 10;
-            this.labelTimeDefault.Text = "12:00";
-            // 
-            // labelTimeMax
-            // 
-            this.labelTimeMax.AutoSize = true;
-            this.labelTimeMax.Location = new System.Drawing.Point(278, 136);
-            this.labelTimeMax.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelTimeMax.Name = "labelTimeMax";
-            this.labelTimeMax.Size = new System.Drawing.Size(34, 13);
-            this.labelTimeMax.TabIndex = 11;
-            this.labelTimeMax.Text = "23:59";
-            // 
-            // labelTimeMin
-            // 
-            this.labelTimeMin.AutoSize = true;
-            this.labelTimeMin.Location = new System.Drawing.Point(7, 136);
-            this.labelTimeMin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelTimeMin.Name = "labelTimeMin";
-            this.labelTimeMin.Size = new System.Drawing.Size(28, 13);
-            this.labelTimeMin.TabIndex = 9;
-            this.labelTimeMin.Text = "0:00";
-            // 
-            // trackBarTime
-            // 
-            this.trackBarTime.LargeChange = 60;
-            this.trackBarTime.Location = new System.Drawing.Point(7, 110);
-            this.trackBarTime.Margin = new System.Windows.Forms.Padding(2);
-            this.trackBarTime.Maximum = 1439;
-            this.trackBarTime.Name = "trackBarTime";
-            this.trackBarTime.Size = new System.Drawing.Size(305, 45);
-            this.trackBarTime.SmallChange = 5;
-            this.trackBarTime.TabIndex = 8;
-            this.trackBarTime.TickFrequency = 60;
-            this.trackBarTime.Value = 720;
-            this.trackBarTime.ValueChanged += new System.EventHandler(this.TrackBarTimeValueChanged);
-            // 
-            // radioModeTime
-            // 
-            this.radioModeTime.AutoSize = true;
-            this.radioModeTime.Location = new System.Drawing.Point(7, 89);
-            this.radioModeTime.Margin = new System.Windows.Forms.Padding(2);
-            this.radioModeTime.Name = "radioModeTime";
-            this.radioModeTime.Size = new System.Drawing.Size(160, 17);
-            this.radioModeTime.TabIndex = 6;
-            this.radioModeTime.TabStop = true;
-            this.radioModeTime.Text = "Test your daily configuration:";
-            this.radioModeTime.UseVisualStyleBackColor = true;
-            this.radioModeTime.CheckedChanged += new System.EventHandler(this.RadioModeTimeCheckedChanged);
-            // 
-            // labelDirectDefault
-            // 
-            this.labelDirectDefault.AutoSize = true;
-            this.labelDirectDefault.Location = new System.Drawing.Point(137, 70);
-            this.labelDirectDefault.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelDirectDefault.Name = "labelDirectDefault";
-            this.labelDirectDefault.Size = new System.Drawing.Size(38, 13);
-            this.labelDirectDefault.TabIndex = 4;
-            this.labelDirectDefault.Text = "6500K";
-            // 
-            // labelDirectMax
-            // 
-            this.labelDirectMax.AutoSize = true;
-            this.labelDirectMax.Location = new System.Drawing.Point(268, 70);
-            this.labelDirectMax.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelDirectMax.Name = "labelDirectMax";
-            this.labelDirectMax.Size = new System.Drawing.Size(44, 13);
-            this.labelDirectMax.TabIndex = 5;
-            this.labelDirectMax.Text = "10000K";
-            // 
-            // labelDirectMin
-            // 
-            this.labelDirectMin.AutoSize = true;
-            this.labelDirectMin.Location = new System.Drawing.Point(7, 70);
-            this.labelDirectMin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.labelDirectMin.Name = "labelDirectMin";
-            this.labelDirectMin.Size = new System.Drawing.Size(38, 13);
-            this.labelDirectMin.TabIndex = 3;
-            this.labelDirectMin.Text = "3000K";
-            // 
-            // trackBarDirect
-            // 
-            this.trackBarDirect.LargeChange = 500;
-            this.trackBarDirect.Location = new System.Drawing.Point(7, 40);
-            this.trackBarDirect.Margin = new System.Windows.Forms.Padding(2);
-            this.trackBarDirect.Maximum = 10000;
-            this.trackBarDirect.Minimum = 3000;
-            this.trackBarDirect.Name = "trackBarDirect";
-            this.trackBarDirect.Size = new System.Drawing.Size(305, 45);
-            this.trackBarDirect.SmallChange = 10;
-            this.trackBarDirect.TabIndex = 2;
-            this.trackBarDirect.TickFrequency = 500;
-            this.trackBarDirect.Value = 6500;
-            this.trackBarDirect.ValueChanged += new System.EventHandler(this.TrackBarDirectValueChanged);
-            // 
-            // radioModeDirect
-            // 
-            this.radioModeDirect.AutoSize = true;
-            this.radioModeDirect.Location = new System.Drawing.Point(7, 23);
-            this.radioModeDirect.Margin = new System.Windows.Forms.Padding(2);
-            this.radioModeDirect.Name = "radioModeDirect";
-            this.radioModeDirect.Size = new System.Drawing.Size(117, 17);
-            this.radioModeDirect.TabIndex = 0;
-            this.radioModeDirect.Text = "Test a temperature:";
-            this.radioModeDirect.UseVisualStyleBackColor = true;
-            this.radioModeDirect.CheckedChanged += new System.EventHandler(this.RadioModeDirectCheckedChanged);
-            // 
-            // textBoxCode
-            // 
-            this.textBoxCode.AcceptsReturn = true;
-            this.textBoxCode.AcceptsTab = true;
-            this.textBoxCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.modeGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxCode.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxCode.Location = new System.Drawing.Point(6, 18);
-            this.textBoxCode.Margin = new System.Windows.Forms.Padding(2);
-            this.textBoxCode.Multiline = true;
-            this.textBoxCode.Name = "textBoxCode";
-            this.textBoxCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxCode.Size = new System.Drawing.Size(293, 163);
-            this.textBoxCode.TabIndex = 4;
-            this.textBoxCode.TextChanged += new System.EventHandler(this.TextBoxCodeTextChanged);
+            this.modeGroupBox.Controls.Add(this.modeConfigValue);
+            this.modeGroupBox.Controls.Add(this.modeTimeTemperature);
+            this.modeGroupBox.Controls.Add(this.modeDirectValue);
+            this.modeGroupBox.Controls.Add(this.modeTimeValue);
+            this.modeGroupBox.Controls.Add(this.modeConfigRadio);
+            this.modeGroupBox.Controls.Add(this.modeTimeDefaultLabel);
+            this.modeGroupBox.Controls.Add(this.modeTimeMaxLabel);
+            this.modeGroupBox.Controls.Add(this.modeTimeMinLabel);
+            this.modeGroupBox.Controls.Add(this.modeTimeTrackBar);
+            this.modeGroupBox.Controls.Add(this.modeTimeRadio);
+            this.modeGroupBox.Controls.Add(this.modeDirectMinLabel);
+            this.modeGroupBox.Controls.Add(this.modeDirectMaxLabel);
+            this.modeGroupBox.Controls.Add(this.modeDirectDefaultLabel);
+            this.modeGroupBox.Controls.Add(this.modeDirectTrackBar);
+            this.modeGroupBox.Controls.Add(this.modeDirectRadio);
+            this.modeGroupBox.Location = new System.Drawing.Point(11, 11);
+            this.modeGroupBox.Margin = new System.Windows.Forms.Padding(2);
+            this.modeGroupBox.Name = "modeGroupBox";
+            this.modeGroupBox.Padding = new System.Windows.Forms.Padding(2);
+            this.modeGroupBox.Size = new System.Drawing.Size(420, 186);
+            this.modeGroupBox.TabIndex = 0;
+            this.modeGroupBox.TabStop = false;
+            this.modeGroupBox.Text = "Test && use";
             // 
-            // buttonSave
+            // modeConfigValue
             // 
-            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSave.Location = new System.Drawing.Point(6, 186);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(120, 23);
-            this.buttonSave.TabIndex = 3;
-            this.buttonSave.Text = "Save configuration";
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.ButtonSaveClick);
+            this.modeConfigValue.AutoSize = true;
+            this.modeConfigValue.Location = new System.Drawing.Point(267, 162);
+            this.modeConfigValue.Name = "modeConfigValue";
+            this.modeConfigValue.Size = new System.Drawing.Size(38, 13);
+            this.modeConfigValue.TabIndex = 14;
+            this.modeConfigValue.Text = "6500K";
             // 
-            // timerUpdate
+            // modeTimeTemperature
             // 
-            this.timerUpdate.Interval = 60000;
-            this.timerUpdate.Tick += new System.EventHandler(this.TimerUpdateTick);
+            this.modeTimeTemperature.AutoSize = true;
+            this.modeTimeTemperature.Location = new System.Drawing.Point(209, 92);
+            this.modeTimeTemperature.Name = "modeTimeTemperature";
+            this.modeTimeTemperature.Size = new System.Drawing.Size(38, 13);
+            this.modeTimeTemperature.TabIndex = 13;
+            this.modeTimeTemperature.Text = "6500K";
+            // 
+            // modeDirectValue
+            // 
+            this.modeDirectValue.AutoSize = true;
+            this.modeDirectValue.Location = new System.Drawing.Point(130, 26);
+            this.modeDirectValue.Name = "modeDirectValue";
+            this.modeDirectValue.Size = new System.Drawing.Size(38, 13);
+            this.modeDirectValue.TabIndex = 1;
+            this.modeDirectValue.Text = "6500K";
+            // 
+            // modeTimeValue
+            // 
+            this.modeTimeValue.AutoSize = true;
+            this.modeTimeValue.Location = new System.Drawing.Point(169, 92);
+            this.modeTimeValue.Name = "modeTimeValue";
+            this.modeTimeValue.Size = new System.Drawing.Size(34, 13);
+            this.modeTimeValue.TabIndex = 7;
+            this.modeTimeValue.Text = "12:00";
+            // 
+            // modeConfigRadio
+            // 
+            this.modeConfigRadio.AutoSize = true;
+            this.modeConfigRadio.Checked = true;
+            this.modeConfigRadio.Location = new System.Drawing.Point(8, 160);
+            this.modeConfigRadio.Margin = new System.Windows.Forms.Padding(2);
+            this.modeConfigRadio.Name = "modeConfigRadio";
+            this.modeConfigRadio.Size = new System.Drawing.Size(254, 17);
+            this.modeConfigRadio.TabIndex = 4;
+            this.modeConfigRadio.TabStop = true;
+            this.modeConfigRadio.Text = "Auto-update using current time and configuration";
+            this.modeConfigRadio.UseVisualStyleBackColor = true;
+            this.modeConfigRadio.CheckedChanged += new System.EventHandler(this.ModeConfigRadioCheckedChanged);
+            // 
+            // modeTimeDefaultLabel
+            // 
+            this.modeTimeDefaultLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.modeTimeDefaultLabel.AutoSize = true;
+            this.modeTimeDefaultLabel.Location = new System.Drawing.Point(190, 138);
+            this.modeTimeDefaultLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.modeTimeDefaultLabel.Name = "modeTimeDefaultLabel";
+            this.modeTimeDefaultLabel.Size = new System.Drawing.Size(34, 13);
+            this.modeTimeDefaultLabel.TabIndex = 10;
+            this.modeTimeDefaultLabel.Text = "12:00";
+            // 
+            // modeTimeMaxLabel
+            // 
+            this.modeTimeMaxLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.modeTimeMaxLabel.AutoSize = true;
+            this.modeTimeMaxLabel.Location = new System.Drawing.Point(378, 138);
+            this.modeTimeMaxLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.modeTimeMaxLabel.Name = "modeTimeMaxLabel";
+            this.modeTimeMaxLabel.Size = new System.Drawing.Size(34, 13);
+            this.modeTimeMaxLabel.TabIndex = 11;
+            this.modeTimeMaxLabel.Text = "23:59";
+            // 
+            // modeTimeMinLabel
+            // 
+            this.modeTimeMinLabel.AutoSize = true;
+            this.modeTimeMinLabel.Location = new System.Drawing.Point(8, 138);
+            this.modeTimeMinLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.modeTimeMinLabel.Name = "modeTimeMinLabel";
+            this.modeTimeMinLabel.Size = new System.Drawing.Size(28, 13);
+            this.modeTimeMinLabel.TabIndex = 9;
+            this.modeTimeMinLabel.Text = "0:00";
+            // 
+            // modeTimeTrackBar
+            // 
+            this.modeTimeTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.modeTimeTrackBar.LargeChange = 60;
+            this.modeTimeTrackBar.Location = new System.Drawing.Point(8, 110);
+            this.modeTimeTrackBar.Margin = new System.Windows.Forms.Padding(2);
+            this.modeTimeTrackBar.Maximum = 1439;
+            this.modeTimeTrackBar.Name = "modeTimeTrackBar";
+            this.modeTimeTrackBar.Size = new System.Drawing.Size(404, 45);
+            this.modeTimeTrackBar.SmallChange = 5;
+            this.modeTimeTrackBar.TabIndex = 3;
+            this.modeTimeTrackBar.TickFrequency = 60;
+            this.modeTimeTrackBar.Value = 720;
+            this.modeTimeTrackBar.ValueChanged += new System.EventHandler(this.ModeTimeTrackBarChanged);
+            // 
+            // modeTimeRadio
+            // 
+            this.modeTimeRadio.AutoSize = true;
+            this.modeTimeRadio.Location = new System.Drawing.Point(8, 90);
+            this.modeTimeRadio.Margin = new System.Windows.Forms.Padding(2);
+            this.modeTimeRadio.Name = "modeTimeRadio";
+            this.modeTimeRadio.Size = new System.Drawing.Size(160, 17);
+            this.modeTimeRadio.TabIndex = 2;
+            this.modeTimeRadio.Text = "Test your daily configuration:";
+            this.modeTimeRadio.UseVisualStyleBackColor = true;
+            this.modeTimeRadio.CheckedChanged += new System.EventHandler(this.ModeTimeRadioCheckedChanged);
+            // 
+            // modeDirectMinLabel
+            // 
+            this.modeDirectMinLabel.AutoSize = true;
+            this.modeDirectMinLabel.Location = new System.Drawing.Point(8, 72);
+            this.modeDirectMinLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.modeDirectMinLabel.Name = "modeDirectMinLabel";
+            this.modeDirectMinLabel.Size = new System.Drawing.Size(38, 13);
+            this.modeDirectMinLabel.TabIndex = 4;
+            this.modeDirectMinLabel.Text = "6500K";
+            // 
+            // modeDirectMaxLabel
+            // 
+            this.modeDirectMaxLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.modeDirectMaxLabel.AutoSize = true;
+            this.modeDirectMaxLabel.Location = new System.Drawing.Point(368, 72);
+            this.modeDirectMaxLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.modeDirectMaxLabel.Name = "modeDirectMaxLabel";
+            this.modeDirectMaxLabel.Size = new System.Drawing.Size(44, 13);
+            this.modeDirectMaxLabel.TabIndex = 5;
+            this.modeDirectMaxLabel.Text = "10000K";
+            // 
+            // modeDirectDefaultLabel
+            // 
+            this.modeDirectDefaultLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.modeDirectDefaultLabel.AutoSize = true;
+            this.modeDirectDefaultLabel.Location = new System.Drawing.Point(190, 72);
+            this.modeDirectDefaultLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.modeDirectDefaultLabel.Name = "modeDirectDefaultLabel";
+            this.modeDirectDefaultLabel.Size = new System.Drawing.Size(38, 13);
+            this.modeDirectDefaultLabel.TabIndex = 3;
+            this.modeDirectDefaultLabel.Text = "3000K";
+            // 
+            // modeDirectTrackBar
+            // 
+            this.modeDirectTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.modeDirectTrackBar.LargeChange = 500;
+            this.modeDirectTrackBar.Location = new System.Drawing.Point(8, 40);
+            this.modeDirectTrackBar.Margin = new System.Windows.Forms.Padding(2);
+            this.modeDirectTrackBar.Maximum = 10000;
+            this.modeDirectTrackBar.Minimum = 3000;
+            this.modeDirectTrackBar.Name = "modeDirectTrackBar";
+            this.modeDirectTrackBar.Size = new System.Drawing.Size(404, 45);
+            this.modeDirectTrackBar.SmallChange = 10;
+            this.modeDirectTrackBar.TabIndex = 1;
+            this.modeDirectTrackBar.TickFrequency = 500;
+            this.modeDirectTrackBar.Value = 6500;
+            this.modeDirectTrackBar.ValueChanged += new System.EventHandler(this.ModeDirectTrackBarValueChanged);
+            // 
+            // modeDirectRadio
+            // 
+            this.modeDirectRadio.AutoSize = true;
+            this.modeDirectRadio.Location = new System.Drawing.Point(8, 24);
+            this.modeDirectRadio.Margin = new System.Windows.Forms.Padding(2);
+            this.modeDirectRadio.Name = "modeDirectRadio";
+            this.modeDirectRadio.Size = new System.Drawing.Size(117, 17);
+            this.modeDirectRadio.TabIndex = 0;
+            this.modeDirectRadio.Text = "Test a temperature:";
+            this.modeDirectRadio.UseVisualStyleBackColor = true;
+            this.modeDirectRadio.CheckedChanged += new System.EventHandler(this.ModeDirectRadioCheckedChanged);
+            // 
+            // trayHelpLabel
+            // 
+            this.trayHelpLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trayHelpLabel.Location = new System.Drawing.Point(115, 152);
+            this.trayHelpLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.trayHelpLabel.Name = "trayHelpLabel";
+            this.trayHelpLabel.Size = new System.Drawing.Size(207, 19);
+            this.trayHelpLabel.TabIndex = 5;
+            this.trayHelpLabel.Text = "(start with option -m to minimize on start)";
+            // 
+            // pointsTextBox
+            // 
+            this.pointsTextBox.AcceptsReturn = true;
+            this.pointsTextBox.AcceptsTab = true;
+            this.pointsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.pointsTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pointsTextBox.Location = new System.Drawing.Point(8, 42);
+            this.pointsTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.pointsTextBox.Multiline = true;
+            this.pointsTextBox.Name = "pointsTextBox";
+            this.pointsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.pointsTextBox.Size = new System.Drawing.Size(200, 76);
+            this.pointsTextBox.TabIndex = 0;
+            this.pointsTextBox.TextChanged += new System.EventHandler(this.PointsTextBoxTextChanged);
+            // 
+            // updateTimer
+            // 
+            this.updateTimer.Interval = 60000;
+            this.updateTimer.Tick += new System.EventHandler(this.UpdateTimerTick);
             // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 230);
+            this.statusStrip.Location = new System.Drawing.Point(0, 388);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 8, 0);
-            this.statusStrip.Size = new System.Drawing.Size(650, 22);
+            this.statusStrip.Size = new System.Drawing.Size(442, 22);
             this.statusStrip.TabIndex = 6;
             this.statusStrip.Text = "Ready";
             // 
@@ -355,92 +364,159 @@
             this.trayIcon.Text = "Menora";
             this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TrayIconMouseDoubleClick);
             // 
-            // groupBoxCode
+            // configGroupBox
             // 
-            this.groupBoxCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.configGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxCode.Controls.Add(this.buttonSetup);
-            this.groupBoxCode.Controls.Add(this.buttonLoad);
-            this.groupBoxCode.Controls.Add(this.textBoxCode);
-            this.groupBoxCode.Controls.Add(this.buttonSave);
-            this.groupBoxCode.Location = new System.Drawing.Point(332, 12);
-            this.groupBoxCode.Name = "groupBoxCode";
-            this.groupBoxCode.Size = new System.Drawing.Size(306, 215);
-            this.groupBoxCode.TabIndex = 7;
-            this.groupBoxCode.TabStop = false;
-            this.groupBoxCode.Text = "Configuration editor";
+            this.configGroupBox.Controls.Add(this.trayCheckBox);
+            this.configGroupBox.Controls.Add(this.trayLabel);
+            this.configGroupBox.Controls.Add(this.intervalUnitLabel);
+            this.configGroupBox.Controls.Add(this.intervalNumericUpDown);
+            this.configGroupBox.Controls.Add(this.trayHelpLabel);
+            this.configGroupBox.Controls.Add(this.intervalLabel);
+            this.configGroupBox.Controls.Add(this.rulesTextBox);
+            this.configGroupBox.Controls.Add(this.rulesLabel);
+            this.configGroupBox.Controls.Add(this.pointsLabel);
+            this.configGroupBox.Controls.Add(this.rulesButton);
+            this.configGroupBox.Controls.Add(this.pointsTextBox);
+            this.configGroupBox.Location = new System.Drawing.Point(11, 202);
+            this.configGroupBox.Name = "configGroupBox";
+            this.configGroupBox.Size = new System.Drawing.Size(420, 176);
+            this.configGroupBox.TabIndex = 1;
+            this.configGroupBox.TabStop = false;
+            this.configGroupBox.Text = "Configuration editor";
             // 
-            // buttonSetup
+            // trayCheckBox
             // 
-            this.buttonSetup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSetup.ContextMenuStrip = this.contextMenuStripSetup;
-            this.buttonSetup.Location = new System.Drawing.Point(258, 186);
-            this.buttonSetup.Name = "buttonSetup";
-            this.buttonSetup.Size = new System.Drawing.Size(32, 23);
-            this.buttonSetup.TabIndex = 6;
-            this.buttonSetup.Text = "...";
-            this.buttonSetup.UseVisualStyleBackColor = true;
-            this.buttonSetup.Click += new System.EventHandler(this.ButtonSetupClick);
+            this.trayCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trayCheckBox.Location = new System.Drawing.Point(99, 147);
+            this.trayCheckBox.Name = "trayCheckBox";
+            this.trayCheckBox.Size = new System.Drawing.Size(22, 24);
+            this.trayCheckBox.TabIndex = 4;
+            this.trayCheckBox.UseVisualStyleBackColor = true;
             // 
-            // contextMenuStripSetup
+            // trayLabel
             // 
-            this.contextMenuStripSetup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemProcess,
-            this.toolStripMenuItemHelp});
-            this.contextMenuStripSetup.Name = "contextMenuStripSetup";
-            this.contextMenuStripSetup.Size = new System.Drawing.Size(158, 48);
+            this.trayLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trayLabel.Location = new System.Drawing.Point(8, 152);
+            this.trayLabel.Name = "trayLabel";
+            this.trayLabel.Size = new System.Drawing.Size(96, 23);
+            this.trayLabel.TabIndex = 13;
+            this.trayLabel.Text = "Minimize to tray:";
             // 
-            // toolStripMenuItemProcess
+            // intervalUnitLabel
             // 
-            this.toolStripMenuItemProcess.Name = "toolStripMenuItemProcess";
-            this.toolStripMenuItemProcess.Size = new System.Drawing.Size(157, 22);
-            this.toolStripMenuItemProcess.Text = "Show processes";
-            this.toolStripMenuItemProcess.Click += new System.EventHandler(this.ToolStripMenuItemProcessClick);
+            this.intervalUnitLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.intervalUnitLabel.Location = new System.Drawing.Point(153, 128);
+            this.intervalUnitLabel.Name = "intervalUnitLabel";
+            this.intervalUnitLabel.Size = new System.Drawing.Size(50, 23);
+            this.intervalUnitLabel.TabIndex = 12;
+            this.intervalUnitLabel.Text = "seconds";
             // 
-            // toolStripMenuItemHelp
+            // intervalNumericUpDown
             // 
-            this.toolStripMenuItemHelp.Name = "toolStripMenuItemHelp";
-            this.toolStripMenuItemHelp.Size = new System.Drawing.Size(157, 22);
-            this.toolStripMenuItemHelp.Text = "Display help";
-            this.toolStripMenuItemHelp.Click += new System.EventHandler(this.ToolStripMenuItemHelpClick);
+            this.intervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.intervalNumericUpDown.Location = new System.Drawing.Point(99, 126);
+            this.intervalNumericUpDown.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
+            this.intervalNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.intervalNumericUpDown.Name = "intervalNumericUpDown";
+            this.intervalNumericUpDown.Size = new System.Drawing.Size(48, 20);
+            this.intervalNumericUpDown.TabIndex = 3;
+            this.intervalNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.intervalNumericUpDown.ValueChanged += new System.EventHandler(this.IntervalNumericUpDownValueChanged);
             // 
-            // buttonLoad
+            // intervalLabel
             // 
-            this.buttonLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonLoad.Location = new System.Drawing.Point(132, 186);
-            this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(120, 23);
-            this.buttonLoad.TabIndex = 5;
-            this.buttonLoad.Text = "Load configuration";
-            this.buttonLoad.UseVisualStyleBackColor = true;
-            this.buttonLoad.Click += new System.EventHandler(this.ButtonLoadClick);
+            this.intervalLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.intervalLabel.Location = new System.Drawing.Point(8, 128);
+            this.intervalLabel.Name = "intervalLabel";
+            this.intervalLabel.Size = new System.Drawing.Size(96, 23);
+            this.intervalLabel.TabIndex = 10;
+            this.intervalLabel.Text = "Update interval:";
+            // 
+            // rulesTextBox
+            // 
+            this.rulesTextBox.AcceptsReturn = true;
+            this.rulesTextBox.AcceptsTab = true;
+            this.rulesTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rulesTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rulesTextBox.Location = new System.Drawing.Point(212, 42);
+            this.rulesTextBox.Margin = new System.Windows.Forms.Padding(2);
+            this.rulesTextBox.Multiline = true;
+            this.rulesTextBox.Name = "rulesTextBox";
+            this.rulesTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.rulesTextBox.Size = new System.Drawing.Size(200, 76);
+            this.rulesTextBox.TabIndex = 1;
+            this.rulesTextBox.TextChanged += new System.EventHandler(this.RulesTextBoxTextChanged);
+            // 
+            // rulesLabel
+            // 
+            this.rulesLabel.Location = new System.Drawing.Point(212, 24);
+            this.rulesLabel.Name = "rulesLabel";
+            this.rulesLabel.Size = new System.Drawing.Size(79, 23);
+            this.rulesLabel.TabIndex = 8;
+            this.rulesLabel.Text = "Behaviors:";
+            // 
+            // pointsLabel
+            // 
+            this.pointsLabel.Location = new System.Drawing.Point(8, 24);
+            this.pointsLabel.Name = "pointsLabel";
+            this.pointsLabel.Size = new System.Drawing.Size(79, 13);
+            this.pointsLabel.TabIndex = 7;
+            this.pointsLabel.Text = "Temperatures:";
+            // 
+            // rulesButton
+            // 
+            this.rulesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rulesButton.Location = new System.Drawing.Point(380, 20);
+            this.rulesButton.Name = "rulesButton";
+            this.rulesButton.Size = new System.Drawing.Size(32, 21);
+            this.rulesButton.TabIndex = 2;
+            this.rulesButton.Text = "...";
+            this.rulesButton.UseVisualStyleBackColor = true;
+            this.rulesButton.Click += new System.EventHandler(this.RulesButtonClick);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 252);
-            this.Controls.Add(this.groupBoxCode);
+            this.ClientSize = new System.Drawing.Size(442, 410);
+            this.Controls.Add(this.configGroupBox);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.groupBoxMode);
+            this.Controls.Add(this.modeGroupBox);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menora";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TempChangerFormClosed);
-            this.Load += new System.EventHandler(this.TempChangerFormLoad);
-            this.Resize += new System.EventHandler(this.TempChangerFormResize);
-            this.groupBoxMode.ResumeLayout(false);
-            this.groupBoxMode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarDirect)).EndInit();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFormClosed);
+            this.Load += new System.EventHandler(this.MainFormLoad);
+            this.Resize += new System.EventHandler(this.MainFormResize);
+            this.modeGroupBox.ResumeLayout(false);
+            this.modeGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.modeTimeTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.modeDirectTrackBar)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.contextMenuStripTray.ResumeLayout(false);
-            this.groupBoxCode.ResumeLayout(false);
-            this.groupBoxCode.PerformLayout();
-            this.contextMenuStripSetup.ResumeLayout(false);
+            this.configGroupBox.ResumeLayout(false);
+            this.configGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.intervalNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -448,15 +524,14 @@
 
         #endregion
 
-        private System.Windows.Forms.TrackBar trackBarDirect;
-        private System.Windows.Forms.RadioButton radioModeDirect;
-        private System.Windows.Forms.RadioButton radioModeConfig;
-        private System.Windows.Forms.TrackBar trackBarTime;
-        private System.Windows.Forms.RadioButton radioModeTime;
-        private System.Windows.Forms.TextBox textBoxCode;
-        private System.Windows.Forms.Label labelTime;
-        private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.TrackBar modeDirectTrackBar;
+        private System.Windows.Forms.RadioButton modeDirectRadio;
+        private System.Windows.Forms.RadioButton modeConfigRadio;
+        private System.Windows.Forms.TrackBar modeTimeTrackBar;
+        private System.Windows.Forms.RadioButton modeTimeRadio;
+        private System.Windows.Forms.TextBox pointsTextBox;
+        private System.Windows.Forms.Label modeTimeValue;
+        private System.Windows.Forms.Timer updateTimer;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripTray;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemName;
@@ -464,23 +539,28 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemConfig;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
         private System.Windows.Forms.NotifyIcon trayIcon;
-        private System.Windows.Forms.GroupBox groupBoxMode;
-        private System.Windows.Forms.Label labelHelp;
-        private System.Windows.Forms.Label labelTimeDefault;
-        private System.Windows.Forms.Label labelTimeMax;
-        private System.Windows.Forms.Label labelTimeMin;
-        private System.Windows.Forms.Label labelDirectDefault;
-        private System.Windows.Forms.Label labelDirectMax;
-        private System.Windows.Forms.Label labelDirectMin;
-        private System.Windows.Forms.GroupBox groupBoxCode;
+        private System.Windows.Forms.GroupBox modeGroupBox;
+        private System.Windows.Forms.Label trayHelpLabel;
+        private System.Windows.Forms.Label modeTimeDefaultLabel;
+        private System.Windows.Forms.Label modeTimeMaxLabel;
+        private System.Windows.Forms.Label modeTimeMinLabel;
+        private System.Windows.Forms.Label modeDirectMinLabel;
+        private System.Windows.Forms.Label modeDirectMaxLabel;
+        private System.Windows.Forms.Label modeDirectDefaultLabel;
+        private System.Windows.Forms.GroupBox configGroupBox;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
-        private System.Windows.Forms.Button buttonLoad;
-        private System.Windows.Forms.Label labelDirectTemperature;
-        private System.Windows.Forms.Label labelTimeTemperature;
-        private System.Windows.Forms.Button buttonSetup;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripSetup;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemProcess;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemHelp;
+        private System.Windows.Forms.Label modeDirectValue;
+        private System.Windows.Forms.Label modeTimeTemperature;
+        private System.Windows.Forms.Button rulesButton;
+        private System.Windows.Forms.Label pointsLabel;
+        private System.Windows.Forms.TextBox rulesTextBox;
+        private System.Windows.Forms.Label rulesLabel;
+        private System.Windows.Forms.Label intervalUnitLabel;
+        private System.Windows.Forms.NumericUpDown intervalNumericUpDown;
+        private System.Windows.Forms.Label intervalLabel;
+        private System.Windows.Forms.CheckBox trayCheckBox;
+        private System.Windows.Forms.Label trayLabel;
+        private System.Windows.Forms.Label modeConfigValue;
 
 
     }

@@ -3,101 +3,77 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Menora.Temperature;
 using Newtonsoft.Json.Linq;
 
 namespace Menora
 {
     class Config
     {
-        public const int DefaultTemperature = 6500;
-        private const int MinutesPerDay = 24 * 60;
-
         public TimeSpan Interval
         {
-            get
-            {
-                return this.interval;
-            }
+            get; set;
         }
 
-        public TimeTemperature[] Times
+        public Point[] Points
         {
-            get
-            {
-                return this.times;
-            }
+            get; set;
+        }
+
+        public Dictionary<string, Rule> Rules
+        {
+            get; set;
         }
 
         public bool Tray
         {
-            get
+            get; set;
+        }
+
+        public Config()
+        {
+            this.Interval = TimeSpan.FromSeconds(60);
+            this.Points = new []
             {
-                return this.tray;
-            }
+                new Point(4 * 60, 3500),
+                new Point(8 * 60, 6500),
+                new Point(18 * 60, 6500),
+                new Point(22 * 60, 3500)
+            };
+            this.Rules = new Dictionary<string, Rule>();
+            this.Tray = true;
         }
 
-        private readonly Dictionary<string, Behavior> behaviors;
-        private readonly TimeSpan interval;
-        private readonly TimeTemperature[] times;
-        private readonly bool tray;
-
-        public Config(IEnumerable<TimeTemperature> times, IDictionary<string, Behavior> behaviors, TimeSpan interval, bool tray)
+        public static bool TryParse(string json, out Config config, out string message)
         {
-            this.behaviors = new Dictionary<string, Behavior>(behaviors);
-            this.interval = interval;
-            this.times = times.OrderBy(o => o.MinutesFromDayStart).ToArray();
-            this.tray = tray;
-        }
-
-        public static bool TryParse(string json, out Config config)
-        {
-            Behavior behavior;
-            Dictionary<string, Behavior> behaviors;
-            TimeSpan interval;
             JObject level0;
             JObject level1object;
-            List<TimeTemperature> times;
+            List<Point> points;
+            Rule rule;
+            Dictionary<string, Rule> rules;
             JToken token;
-            bool tray;
-            
-            config = null;
             
             try
             {
                 level0 = JObject.Parse(json);
             }
-            catch
+            catch (Exception exception)
             {
+                config = null;
+                message = exception.Message;
+
                 return false;
             }
 
-            behaviors = new Dictionary<string, Behavior>();
-            interval = TimeSpan.FromSeconds(60);
-            times = new List<TimeTemperature>();
-            tray = true;
-
-            if (level0.TryGetValue("behaviors", out token))
-            {
-                level1object = token as JObject;
-
-                if (level1object != null)
-                {
-                    foreach (var pair in level1object)
-                    {
-                        if (!Enum.TryParse<Behavior>(pair.Value.Value<string>(), true, out behavior))
-                            return false;
-
-                        behaviors[pair.Key] = behavior;
-                    }
-                }
-            }
+            config = new Config();
 
             if (level0.TryGetValue("interval", out token))
-                interval = TimeSpan.FromSeconds(token.Value<int>());
+                config.Interval = TimeSpan.FromSeconds(token.Value<int>());
 
-            if (level0.TryGetValue("times", out token))
+            if (level0.TryGetValue("points", out token) || level0.TryGetValue("times", out token))
             {
                 level1object = token as JObject;
+                points = new List<Point>();
 
                 if (level1object != null)
                 {
@@ -105,68 +81,61 @@ namespace Menora
                     {
                         var match = Regex.Match(pair.Key, "^([0-9]{1,2}):([0-9]{1,2})$");
 
-                        if (!match.Success)
-                            return false;
+                        if (match.Success)
+                        {
+                            var time = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture) * 60 + int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
 
-                        var time = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture) * 60 + int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
-
-                        times.Add(new TimeTemperature(time, pair.Value.Value<int>()));
+                            points.Add(new Point(time, pair.Value.Value<int>()));
+                        }
                     }
                 }
+
+                config.Points = points.OrderBy(o => o.MinutesFromDayStart).ToArray();
+            }
+
+            if (level0.TryGetValue("rules", out token) || level0.TryGetValue("behaviors", out token))
+            {
+                level1object = token as JObject;
+                rules = new Dictionary<string, Rule>();
+
+                if (level1object != null)
+                {
+                    foreach (var pair in level1object)
+                    {
+                        if (Enum.TryParse<Rule>(pair.Value.Value<string>(), true, out rule))
+                            rules[pair.Key] = rule;
+                    }
+                }
+
+                config.Rules = rules;
             }
 
             if (level0.TryGetValue("tray", out token))
-                tray = token.Value<bool>();
+                config.Tray = token.Value<bool>();
 
-            config = new Config(times, behaviors, interval, tray);
+            message = null;
 
             return true;
         }
 
-        public Behavior GetPolicy(IEnumerable<string> processes)
+        public string ToJSON()
         {
-            Behavior candidate;
-            Behavior result;
+            var json = new JObject();
+            var points = new JObject();
+            var rules = new JObject();
 
-            // Do not fetch process list if there is nothing to exclude
-            if (this.behaviors.Count == 0)
-                return Behavior.Apply;
+            foreach (var point in this.Points)
+                points[string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00}", point.MinutesFromDayStart / 60, point.MinutesFromDayStart % 60)] = point.TempKelvin;
 
-            // Search for behavior matching of currently running processes
-            result = Behavior.Apply;
+            foreach (var rule in this.Rules)
+                rules[rule.Key] = rule.Value.ToString();
 
-            foreach (var process in processes)
-            {
-                if (this.behaviors.TryGetValue(process, out candidate) && candidate > result)
-                    result = candidate;
-            }
+            json["interval"] = (int)this.Interval.TotalSeconds;
+            json["points"] = points;
+            json["rules"] = rules;
+            json["tray"] = this.Tray;
 
-            return result;
-        }
-
-        public int TemperatureAt(int minutesFromDayStart)
-        {
-            if (this.times.Length < 1)
-                return Config.DefaultTemperature;
-
-            // Find index of entry following specified minutes from day start
-            int index = 0;
-
-            while (index < this.times.Length && minutesFromDayStart > times[index].MinutesFromDayStart)
-                ++index;
-
-            // Get begin and end entries surrounding specified minutes from day start 
-            TimeTemperature begin = this.times[(index + this.times.Length - 1) % this.times.Length];
-            TimeTemperature end = this.times[index % this.times.Length];
-
-            // Compute ratio of elapsed time on total time between begin and end entries
-            int elapsed = (minutesFromDayStart - begin.MinutesFromDayStart + Config.MinutesPerDay) % Config.MinutesPerDay;
-            int total = (end.MinutesFromDayStart - begin.MinutesFromDayStart + Config.MinutesPerDay) % Config.MinutesPerDay;
-
-            double alpha = (double)elapsed / total;
-
-            // Interpolate temperature according to elapsed time
-            return (int)Math.Round((1 - alpha) * begin.TempKelvin + alpha * end.TempKelvin);
+            return json.ToString();
         }
     }
 }
