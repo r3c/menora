@@ -329,31 +329,31 @@
             this.toolStripMenuItemConfig,
             this.toolStripMenuItemExit});
             this.contextMenuStripTray.Name = "ctxTrayIcon";
-            this.contextMenuStripTray.Size = new System.Drawing.Size(140, 76);
+            this.contextMenuStripTray.Size = new System.Drawing.Size(153, 98);
             // 
             // toolStripMenuItemName
             // 
             this.toolStripMenuItemName.Enabled = false;
             this.toolStripMenuItemName.Name = "toolStripMenuItemName";
-            this.toolStripMenuItemName.Size = new System.Drawing.Size(139, 22);
-            this.toolStripMenuItemName.Text = "Menora v0.2";
+            this.toolStripMenuItemName.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemName.Text = "Menora v";
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripMenuItemConfig
             // 
             this.toolStripMenuItemConfig.Name = "toolStripMenuItemConfig";
-            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemConfig.Text = "Settings...";
             this.toolStripMenuItemConfig.Click += new System.EventHandler(this.ToolStripMenuItemConfigClick);
             // 
             // toolStripMenuItemExit
             // 
             this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
-            this.toolStripMenuItemExit.Size = new System.Drawing.Size(139, 22);
+            this.toolStripMenuItemExit.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItemExit.Text = "Exit";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.ToolStripMenuItemExitClick);
             // 

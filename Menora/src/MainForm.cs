@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using Menora.Behavior;
 using Menora.Properties;
@@ -24,6 +25,7 @@ namespace Menora
 
             this.InitializeComponent();
 
+            this.toolStripMenuItemName.Text += Assembly.GetExecutingAssembly().GetName().Version.ToString(2);
             this.Icon = Resources.AppIcon;
 
             this.rules = new Dictionary<string, Rule>();
