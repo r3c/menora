@@ -33,12 +33,17 @@ namespace Menora
             this.minimize = minimize;
             this.points = new SortedList<int, Point>();
 
-            config = new Config();
-
-            if (File.Exists(configPath) && !Config.TryParse(File.ReadAllText(configPath), out config, out message))
+            if (!File.Exists(configPath))
+                config = new Config();
+            else if (!Config.TryParse(File.ReadAllText(configPath), out config, out message))
+            {
                 this.toolStripStatusLabel.Text = string.Format(CultureInfo.InvariantCulture, "Configuration error: {0}", message);
 
+                config = new Config();
+            }
+
             this.ConfigSet(config);
+            this.ModeConfigRadioCheckedChanged(this, new EventArgs());
         }
 
         #region Event handling

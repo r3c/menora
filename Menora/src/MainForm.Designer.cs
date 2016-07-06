@@ -45,7 +45,6 @@
             this.modeDirectDefaultLabel = new System.Windows.Forms.Label();
             this.modeDirectTrackBar = new System.Windows.Forms.TrackBar();
             this.modeDirectRadio = new System.Windows.Forms.RadioButton();
-            this.trayHelpLabel = new System.Windows.Forms.Label();
             this.pointsTextBox = new System.Windows.Forms.TextBox();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -274,16 +273,6 @@
             this.modeDirectRadio.UseVisualStyleBackColor = true;
             this.modeDirectRadio.CheckedChanged += new System.EventHandler(this.ModeDirectRadioCheckedChanged);
             // 
-            // trayHelpLabel
-            // 
-            this.trayHelpLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trayHelpLabel.Location = new System.Drawing.Point(126, 152);
-            this.trayHelpLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.trayHelpLabel.Name = "trayHelpLabel";
-            this.trayHelpLabel.Size = new System.Drawing.Size(207, 19);
-            this.trayHelpLabel.TabIndex = 5;
-            this.trayHelpLabel.Text = "(start with option -m to minimize on start)";
-            // 
             // pointsTextBox
             // 
             this.pointsTextBox.AcceptsReturn = true;
@@ -329,31 +318,31 @@
             this.toolStripMenuItemConfig,
             this.toolStripMenuItemExit});
             this.contextMenuStripTray.Name = "ctxTrayIcon";
-            this.contextMenuStripTray.Size = new System.Drawing.Size(153, 98);
+            this.contextMenuStripTray.Size = new System.Drawing.Size(126, 76);
             // 
             // toolStripMenuItemName
             // 
             this.toolStripMenuItemName.Enabled = false;
             this.toolStripMenuItemName.Name = "toolStripMenuItemName";
-            this.toolStripMenuItemName.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemName.Size = new System.Drawing.Size(125, 22);
             this.toolStripMenuItemName.Text = "Menora v";
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(122, 6);
             // 
             // toolStripMenuItemConfig
             // 
             this.toolStripMenuItemConfig.Name = "toolStripMenuItemConfig";
-            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemConfig.Size = new System.Drawing.Size(125, 22);
             this.toolStripMenuItemConfig.Text = "Settings...";
             this.toolStripMenuItemConfig.Click += new System.EventHandler(this.ToolStripMenuItemConfigClick);
             // 
             // toolStripMenuItemExit
             // 
             this.toolStripMenuItemExit.Name = "toolStripMenuItemExit";
-            this.toolStripMenuItemExit.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItemExit.Size = new System.Drawing.Size(125, 22);
             this.toolStripMenuItemExit.Text = "Exit";
             this.toolStripMenuItemExit.Click += new System.EventHandler(this.ToolStripMenuItemExitClick);
             // 
@@ -373,7 +362,6 @@
             this.configGroupBox.Controls.Add(this.trayLabel);
             this.configGroupBox.Controls.Add(this.intervalUnitLabel);
             this.configGroupBox.Controls.Add(this.intervalNumericUpDown);
-            this.configGroupBox.Controls.Add(this.trayHelpLabel);
             this.configGroupBox.Controls.Add(this.intervalLabel);
             this.configGroupBox.Controls.Add(this.rulesTextBox);
             this.configGroupBox.Controls.Add(this.rulesLabel);
@@ -392,8 +380,9 @@
             this.trayCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.trayCheckBox.Location = new System.Drawing.Point(99, 147);
             this.trayCheckBox.Name = "trayCheckBox";
-            this.trayCheckBox.Size = new System.Drawing.Size(22, 24);
+            this.trayCheckBox.Size = new System.Drawing.Size(233, 24);
             this.trayCheckBox.TabIndex = 4;
+            this.trayCheckBox.Text = "(start with option -m to minimize on start)";
             this.trayCheckBox.UseVisualStyleBackColor = true;
             // 
             // trayLabel
@@ -540,7 +529,6 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemExit;
         private System.Windows.Forms.NotifyIcon trayIcon;
         private System.Windows.Forms.GroupBox modeGroupBox;
-        private System.Windows.Forms.Label trayHelpLabel;
         private System.Windows.Forms.Label modeTimeDefaultLabel;
         private System.Windows.Forms.Label modeTimeMaxLabel;
         private System.Windows.Forms.Label modeTimeMinLabel;
